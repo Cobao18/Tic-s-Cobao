@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CAPACITACION TIC'S - COBAO</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F4C430;
+    --teal: #2DD4BF;
+    --purple: #5B1FAA;
+    --navy: #0B0B2A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow-x: hidden; }
+
+  body {
+    background: #080612;
+    font-family: 'Cinzel', serif;
+    cursor: none;
+    min-height: 100vh;
+  }
+
+  /* ─── CANVAS fijo al fondo, cubre toda la ventana ─── */
+  #c {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    display: block;
+  }
+
+  /* ─── Contenido por encima del canvas ─── */
+  .content {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; /* deja pasar los eventos del mouse al canvas */
+  }
+
+  /* ─── HEADER ─── */
+  .header-title {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 14px 20px;
+    background-color: rgba(0, 0, 0, 0.72);
+    width: 100%;
+    letter-spacing: 3px;
+    font-size: clamp(14px, 2.5vw, 22px);
+    border-bottom: 3px solid transparent;
+    animation: cambiaColor 4s linear infinite, bordeCambia 4s linear infinite;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Efecto marquee con CSS puro — sin <marquee> obsoleto */
+  .marquee-track {
+    display: inline-block;
+    animation: marqueeMov 14s linear infinite;
+  }
+
+  @keyframes marqueeMov {
+    0%   { transform: translateX(60vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .subtitle {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 6px;
+    font-size: clamp(13px, 1.8vw, 18px);
+    animation: cambiaColor 9s linear infinite;
+  }
+
+  .subtitle2 {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 4px;
+    font-size: clamp(11px, 1.5vw, 15px);
+    animation: cambiaColor 9s 2s linear infinite;
+  }
+
+  @keyframes cambiaColor {
+    0%   { color: #ff4444; }
+    25%  { color: #cc44ff; }
+    50%  { color: #00eeff; }
+    75%  { color: #ffee00; }
+    100% { color: #ff4444; }
+  }
+
+  @keyframes bordeCambia {
+    0%   { border-color: #ff4444; }
+    25%  { border-color: #cc44ff; }
+    50%  { border-color: #00eeff; }
+    75%  { border-color: #ffee00; }
+    100% { border-color: #ff4444; }
+  }
+
+  /* ─── LOGO ─── */
+  .logo-link { pointer-events: all; display: block; }
+  .logo-img {
+    display: block;
+    margin: 18px auto;
+    border-radius: 50%;
+    border: 4px solid gold;
+    box-shadow: 0 0 28px gold, 0 0 60px rgba(244,196,48,0.4);
+    height: 160px;
+    width: 160px;
+    object-fit: cover;
+    transition: box-shadow 0.3s;
+  }
+  .logo-img:hover {
+    box-shadow: 0 0 40px gold, 0 0 100px rgba(244,196,48,0.7);
+  }
+
+  /* ─── HINT ─── */
+  #hint {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 140, 30, 0.6);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 20;
+    animation: fadePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes fadePulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.9; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Canvas del dragón — fijo en el fondo -->
+<canvas id="c"></canvas>
+
+<!-- Texto / UI por encima -->
+<div class="content">
+  <h1 class="header-title">
+    <span class="marquee-track">TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN</span>
+  </h1>
+  <h2 class="subtitle">Colegio de Bachilleres del Estado de Oaxaca</h2>
+  <h3 class="subtitle2">Educación Pública de Calidad</h3>
+
+  <a class="logo-link" href="tic_cobao_v3 (1).html">
+    <img class="logo-img" src="Logo-COBAO-300x300.jpg" alt="Logo COBAO">
+  </a>
+</div>
+
+<div id="hint">Mueve el cursor para invocar al dragón</div>
+
+<!-- ═══════════════════════════════════════════════
+     DRAGÓN — JavaScript corregido y mejorado
+     ═══════════════════════════════════════════════ -->
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+/* ── Mouse: coordenadas relativas a la ventana ── */
+const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+
+// mousemove captura coordenadas del cliente (ventana), no de la página
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+/* ── Segmentos del cuerpo ── */
+const NUM_SEGMENTS = 30;
+const SEG_LEN      = 14;
+const segments     = [];
+
+for (let i = 0; i < NUM_SEGMENTS; i++) {
+  segments.push({
+    x: canvas.width  / 2,
+    y: canvas.height / 2 + i * SEG_LEN
+  });
+}
+
+/* ── Partículas de fuego ── */
+const particles = [];
+
+function spawnParticles(x, y) {
+  for (let i = 0; i < 4; i++) {
+    particles.push({
+      x, y,
+      vx:   (Math.random() - 0.5) * 3.5,
+      vy:   (Math.random() - 0.5) * 3.5 - 1,
+      life: 1,
+      size: Math.random() * 5 + 1,
+      hue:  Math.random() * 40 + 5
+    });
+  }
+}
+
+/* ── Estrellas de fondo ── */
+const stars = Array.from({ length: 220 }, () => ({
+  x:     Math.random() * 2000,
+  y:     Math.random() * 2000,
+  r:     Math.random() * 1.3,
+  alpha: Math.random()
+}));
+
+/* ── Helpers de color ── */
+function getSegRadius(i) {
+  if (i === 0) return 22;
+  return Math.max(3, 19 * (1 - (i / NUM_SEGMENTS) * 0.87));
+}
+
+function getBodyColor(i, t) {
+  const tt = i / NUM_SEGMENTS;
+  const h  = 130 - tt * 80 + Math.sin(t * 2 + i * 0.3) * 12;
+  const l  = 40  + Math.sin(t * 3 + i * 0.2) * 8;
+  return `hsl(${h},82%,${l}%)`;
+}
+
+/* ── Fondo ── */
+function drawBackground() {
+  ctx.fillStyle = 'rgba(8, 6, 18, 0.20)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach(s => {
+    s.alpha = Math.max(0.05, Math.min(1, s.alpha + (Math.random() - 0.5) * 0.06));
+    const sx = s.x % canvas.width;
+    const sy = s.y % canvas.height;
+    ctx.beginPath();
+    ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,180,255,${s.alpha * 0.55})`;
+    ctx.fill();
+  });
+}
+
+/* ── Dragón ── */
+function drawDragon(t) {
+  // Cuerpo de cola a cabeza
+  for (let i = NUM_SEGMENTS - 1; i >= 1; i--) {
+    const seg  = segments[i];
+    const prev = segments[i - 1];
+    const r    = getSegRadius(i);
+    const color = getBodyColor(i, t);
+    const angle = Math.atan2(seg.y - prev.y, seg.x - prev.x);
+
+    ctx.save();
+    ctx.translate(seg.x, seg.y);
+    ctx.rotate(angle);
+
+    // Resplandor
+    const grd = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r * 1.7);
+    grd.addColorStop(0, color);
+    grd.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(0, 0, r * 1.7, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.globalAlpha = 0.28;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Escama principal
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r, r * 0.72, 0, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = `hsl(${130 - (i / NUM_SEGMENTS) * 80},60%,68%)`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // Cresta espinal
+    if (i < NUM_SEGMENTS - 2) {
+      const sh = r * (0.5 + Math.sin(t * 4 + i * 0.5) * 0.2);
+      ctx.beginPath();
+      ctx.moveTo(-r * 0.3, -r * 0.6);
+      ctx.lineTo(0, -r * 0.6 - sh);
+      ctx.lineTo( r * 0.3, -r * 0.6);
+      ctx.fillStyle = `hsl(${160 - i * 2},72%,56%)`;
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  /* ── CABEZA ── */
+  const head     = segments[0];
+  const neck     = segments[1];
+  const headAng  = Math.atan2(head.y - neck.y, head.x - neck.x);
+
+  ctx.save();
+  ctx.translate(head.x, head.y);
+  ctx.rotate(headAng);
+
+  // Halo de cabeza
+  const hGlow = ctx.createRadialGradient(0, 0, 5, 0, 0, 50);
+  hGlow.addColorStop(0, 'rgba(80,255,150,0.38)');
+  hGlow.addColorStop(1, 'transparent');
+  ctx.beginPath(); ctx.arc(0, 0, 50, 0, Math.PI * 2);
+  ctx.fillStyle = hGlow; ctx.fill();
+
+  // Hocico
+  ctx.beginPath();
+  ctx.ellipse(12, 0, 20, 13, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#1a7a40';
+  ctx.fill();
+  ctx.strokeStyle = '#4dffa0'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Cabeza principal
+  ctx.beginPath();
+  ctx.ellipse(-2, 0, 22, 18, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#228850';
+  ctx.fill();
+  ctx.strokeStyle = '#4dffa0'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Cuernos
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(-5, -14); ctx.bezierCurveTo(-10, -30, -2, -38, 3, -42);
+  ctx.strokeStyle = '#a0ffc8'; ctx.lineWidth = 3; ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(5, -12); ctx.bezierCurveTo(14, -26, 10, -35, 14, -40);
+  ctx.strokeStyle = '#a0ffc8'; ctx.lineWidth = 2.5; ctx.stroke();
+
+  // Ojo — pulso
+  const ep = 0.7 + Math.sin(t * 5) * 0.3;
+  const eGrd = ctx.createRadialGradient(8, -7, 0, 8, -7, 11);
+  eGrd.addColorStop(0, `rgba(255,200,0,${ep})`);
+  eGrd.addColorStop(1, 'transparent');
+  ctx.beginPath(); ctx.arc(8, -7, 11, 0, Math.PI * 2);
+  ctx.fillStyle = eGrd; ctx.fill();
+
+  ctx.beginPath(); ctx.arc(8, -7, 5.5, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffcc00'; ctx.fill();
+  ctx.beginPath(); ctx.arc(8, -7, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#111'; ctx.fill();
+  ctx.beginPath(); ctx.arc(9, -8, 1.2, 0, Math.PI * 2);
+  ctx.fillStyle = 'white'; ctx.fill();
+
+  // Fosas nasales
+  ctx.beginPath();
+  ctx.arc(24, -4, 2, 0, Math.PI * 2);
+  ctx.arc(24,  4, 2, 0, Math.PI * 2);
+  ctx.fillStyle = '#0a3320'; ctx.fill();
+
+  // Dientes
+  for (let k = -1; k <= 1; k++) {
+    ctx.beginPath();
+    ctx.moveTo(26 + k*6, 8);
+    ctx.lineTo(28 + k*6, 15);
+    ctx.lineTo(24 + k*6, 8);
+    ctx.fillStyle = '#e8ffe8'; ctx.fill();
+  }
+
+  // Lengua bífida
+  const lick = Math.sin(t * 12) * 5;
+  ctx.beginPath();
+  ctx.moveTo(30, 4); ctx.lineTo(40, 6 + lick);
+  ctx.moveTo(40, 6 + lick); ctx.lineTo(46,  3 + lick);
+  ctx.moveTo(40, 6 + lick); ctx.lineTo(46,  9 + lick);
+  ctx.strokeStyle = '#ff3366'; ctx.lineWidth = 2; ctx.stroke();
+
+  ctx.restore();
+
+  /* ── ALAS en segmento 4 ── */
+  const wSeg  = segments[4];
+  const wPrev = segments[3];
+  const wAng  = Math.atan2(wSeg.y - wPrev.y, wSeg.x - wPrev.x);
+  const flap  = Math.sin(t * 4) * 0.4;
+
+  ctx.save();
+  ctx.translate(wSeg.x, wSeg.y);
+  ctx.rotate(wAng);
+
+  [[-1, -1], [1, 1]].forEach(([dir, sign]) => {
+    ctx.save();
+    ctx.rotate(sign * (flap + 0.3));
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-20, dir*40, -60, dir*60, -90, dir*30);
+    ctx.bezierCurveTo(-70, dir*10, -40, dir*-10, 0, 0);
+    ctx.fillStyle = 'rgba(15,100,50,0.75)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(100,255,160,0.5)';
+    ctx.lineWidth = 1; ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0,0); ctx.lineTo(-80, dir*28);
+    ctx.moveTo(0,0); ctx.lineTo(-55, dir*55);
+    ctx.moveTo(0,0); ctx.lineTo(-20, dir*40);
+    ctx.strokeStyle = 'rgba(100,255,160,0.3)';
+    ctx.lineWidth = 0.8; ctx.stroke();
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
+/* ── Partículas ── */
+function drawParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy -= 0.05;
+    p.life -= 0.03;
+    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${p.hue},100%,65%,${p.life * 0.85})`;
+    ctx.fill();
+  }
+}
+
+/* ── Cursor personalizado ── */
+function drawCursor() {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(mouse.x, mouse.y, 5, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,200,80,0.95)';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(mouse.x, mouse.y, 11, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,150,30,0.6)';
+  ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.restore();
+}
+
+/* ── Física del cuerpo ── */
+function update() {
+  // Cabeza sigue al cursor con lerp suave
+  segments[0].x += (mouse.x - segments[0].x) * 0.15;
+  segments[0].y += (mouse.y - segments[0].y) * 0.15;
+
+  // Cada segmento sigue al anterior (cadena inversa)
+  for (let i = 1; i < NUM_SEGMENTS; i++) {
+    const prev = segments[i - 1];
+    const curr = segments[i];
+    const len  = SEG_LEN + (i < 5 ? 4 : 0);
+    const dist = Math.hypot(curr.x - prev.x, curr.y - prev.y);
+    if (dist > len) {
+      const a = Math.atan2(curr.y - prev.y, curr.x - prev.x);
+      curr.x = prev.x + Math.cos(a) * len;
+      curr.y = prev.y + Math.sin(a) * len;
+    }
+  }
+
+  if (Math.random() < 0.45) spawnParticles(segments[0].x, segments[0].y);
+}
+
+/* ── Loop principal ── */
+let time = 0;
+function loop() {
+  time += 0.016;
+  drawBackground();
+  update();
+  drawParticles();
+  drawDragon(time);
+  drawCursor();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+
+</body>
+</html>

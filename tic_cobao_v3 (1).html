@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+   <title>TIC's COBAO</title>
+  <style>
+
+        :root {
+      --purple: #5B1FAA;
+      --dark-purple: #3A0F7A;
+      --red: #CC1414;
+      --bright-red: #FF2020;
+      --teal: #2DD4BF;
+      --gold: #F4C430;
+      --white: #FFFFFF;
+      --dark-blue: #0B0B2A;
+    }
+
+ 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark-blue);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+
+
+
+
+
+    nav {
+  background: navy;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 3rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid turquoise;
+}
+.nav-logo { display: flex; align-items: center; gap: 0.8rem; }
+.nav-logo img { width: 52px; height: 52px; border-radius: 50%; border: 2px solid turquoise; transition: transform 0.4s; }
+.nav-logo img:hover { transform: rotate(10deg) scale(1.1); }
+.nav-logo strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: turquoise; display: block; }
+.nav-logo small { font-size: 0.6rem; color: lightgray; text-transform: uppercase; }
+nav ul { display: flex; gap: 2rem; list-style: none; }
+nav ul a { color: lightgray; text-decoration: none; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; padding-bottom: 4px; position: relative; transition: color 0.2s; }
+nav ul a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: turquoise; transition: width 0.3s; }
+nav ul a:hover { color: turquoise; }
+nav ul a:hover::after { width: 100%; }
+.nav-badge { background: crimson; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; padding: 5px 16px; border-radius: 999px; }
+
+
+
+
+
+
+    /* --- HERO (portada principal) --- */
+    .hero {
+      min-height: 88vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem; padding: 6rem 5rem;
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(91,31,170,0.55) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(204,20,20,0.2)  0%, transparent 50%),
+        var(--dark-blue);
+    }
+
+
+
+
+
+           /* Texto del hero (lado izquierdo) */
+    .hero-texto { position: relative; z-index: 2; animation: subirFadeIn 0.9s ease both; }
+    .hero-texto .etiqueta {
+      display: inline-block; background: rgba(45,212,191,0.12);
+      border: 1px solid var(--teal); color: var(--teal);
+      font-size: 0.72rem; font-weight: 900; letter-spacing: 3px;
+      text-transform: uppercase; padding: 5px 16px; border-radius: 999px; margin-bottom: 1.2rem;
+    }
+    .hero-texto h1 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 5.5rem;
+      line-height: 0.92; letter-spacing: 2px; margin-bottom: 1.5rem;
+    }
+    .hero-texto h1 em     { color: var(--teal);     font-style: normal; display: block; }
+    .hero-texto h1 strong { color: var(--bright-red); }
+    .hero-texto p { font-size: 1rem; line-height: 1.85; color: rgba(255,255,255,0.78); max-width: 490px; margin-bottom: 2rem; }
+    /* Boton del hero */
+    .btn-hero {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--teal), #0F9E8C);
+      color: var(--dark-blue); font-weight: 900; font-size: 0.9rem;
+      letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px;
+      border-radius: 999px; text-decoration: none;
+      box-shadow: 0 6px 24px rgba(45,212,191,0.4); transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(45,212,191,0.6); }
+
+
+
+
+
+
+    /* Logo animado (lado derecho del hero) */
+    .hero-logo {
+      position: relative; z-index: 2;
+      display: flex; justify-content: center; align-items: center;
+      animation: subirFadeIn 0.9s 0.3s ease both;
+    }
+    .logo-anillo { position: relative; width: 370px; height: 370px; }
+    /* Anillo exterior giratorio */
+    .logo-anillo::before {
+      content: ''; position: absolute; inset: -20px; border-radius: 50%;
+      border: 2px dashed rgba(45,212,191,0.3); animation: girar 20s linear infinite;
+    }
+
+
+
+
+
+
+
+    /* Segundo anillo giratorio al reves */
+    .logo-anillo::after {
+      content: ''; position: absolute; inset: -40px; border-radius: 50%;
+      border: 1px solid rgba(204,20,20,0.2); animation: girar 35s linear infinite reverse;
+    }
+
+
+
+
+
+    /* Imagen circular flotante */
+    .logo-anillo img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+      border: 4px solid var(--teal); display: block;
+      box-shadow: 0 0 40px rgba(45,212,191,0.4), 0 0 80px rgba(91,31,170,0.6);
+      animation: flotar 2.8s ease-in-out infinite;
+    }
+
+
+
+
+
+
+
+
+    /* Puntos de colores alrededor del logo */
+    .punto-orbita { position: absolute; width: 13px; height: 13px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+    .punto-orbita.rojo   { background: var(--red);   box-shadow: 0 0 10px var(--red);   }
+    .punto-orbita.dorado { background: var(--gold);  box-shadow: 0 0 10px var(--gold); }
+
+
+
+
+
+
+
+    .barra-stats {
+      background: var(--dark-purple); padding: 2rem 5rem;
+      display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem;
+      border-top: 1px solid rgba(45,212,191,0.15); border-bottom: 1px solid rgba(45,212,191,0.15);
+    }
+    .stat { text-align: center; }
+    .stat .numero      { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--teal); line-height: 1; }
+    .stat .etiqueta-stat { font-size: 0.72rem; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 4px; }
+    .divisor { width: 1px; height: 55px; background: rgba(255,255,255,0.1); }
+
+
+
+
+
+
+
+  
+    .seccion { padding: 6rem 5rem; }
+    .encabezado-seccion { text-align: center; margin-bottom: 4rem; }
+    .encabezado-seccion .tag {
+      display: inline-block; background: rgba(45,212,191,0.1);
+      border: 1px solid rgba(45,212,191,0.3); color: var(--teal);
+      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+      font-weight: 900; padding: 5px 18px; border-radius: 999px; margin-bottom: 1rem;
+    }
+    .encabezado-seccion h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 3px; }
+    .encabezado-seccion p  { color: rgba(255,255,255,0.55); font-size: 1rem; max-width: 500px; margin: 0.8rem auto 0; }
+    /* Las 4 tarjetas en fila */
+    .grid-modulos { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+    /* Tarjeta individual */
+    .tarjeta-modulo {
+      background: linear-gradient(160deg, rgba(91,31,170,0.45), rgba(10,8,42,0.8));
+      border: 1px solid rgba(45,212,191,0.2); border-radius: 20px; overflow: hidden;
+      transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+      animation: subirFadeIn 0.6s ease both; cursor: default;
+    }
+    .tarjeta-modulo:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 30px rgba(45,212,191,0.15); border-color: rgba(45,212,191,0.55); }
+    .tarjeta-modulo:nth-child(1) { animation-delay: 0.1s; }
+    .tarjeta-modulo:nth-child(2) { animation-delay: 0.2s; }
+    .tarjeta-modulo:nth-child(3) { animation-delay: 0.3s; }
+    .tarjeta-modulo:nth-child(4) { animation-delay: 0.4s; }
+    /* Franja superior verde */
+    .tarjeta-top {
+      background: linear-gradient(135deg, var(--teal), #0F8E7F);
+      padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    .tarjeta-top .semestre      { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--dark-blue); }
+    .tarjeta-top .numero-romano { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--dark-blue); line-height: 1; }
+    /* Cuerpo de la tarjeta */
+    .tarjeta-body { padding: 1.6rem; }
+    .tarjeta-body h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem; letter-spacing: 1px; margin-bottom: 1.2rem; }
+    .submodulo { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.9rem; }
+    .punto-sub { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 6px; }
+    .submodulo p    { font-size: 0.87rem; color: rgba(255,255,255,0.78); line-height: 1.4; }
+    .submodulo span { display: block; font-size: 0.68rem; color: var(--teal); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+
+
+
+
+
+
+    .seccion-proposito {
+      background: linear-gradient(160deg, var(--dark-purple) 0%, var(--dark-blue) 100%);
+      padding: 6rem 5rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .seccion-proposito::before {
+      content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(204,20,20,0.08) 0%, transparent 70%);
+      top: -200px; right: -100px; pointer-events: none;
+    }
+    .seccion-proposito h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 2px; line-height: 1; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+    .seccion-proposito h2 em { color: var(--teal); font-style: normal; display: block; }
+    .seccion-proposito p { font-size: 1rem; line-height: 1.85; color: rgba(255,255,255,0.78); max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+
+
+
+
+    .seccion-fundamento {
+      background: var(--purple); padding: 5rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .seccion-fundamento::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(45,212,191,0.07) 0%, transparent 70%);
+    }
+    .seccion-fundamento h2   { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 3px; color: var(--teal); margin-bottom: 1.5rem; position: relative; }
+    .linea-decorativa        { display: block; width: 60px; height: 3px; background: var(--teal); margin: 2rem auto; border-radius: 999px; }
+    .seccion-fundamento p    { font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,0.82); max-width: 760px; margin: 0 auto; position: relative; }
+
+
+
+
+
+
+    footer {
+      background: #080618; padding: 3rem 5rem;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 2rem;
+      border-top: 1px solid rgba(45,212,191,0.12);
+    }
+    .footer-izq { display: flex; align-items: center; gap: 1rem; }
+    .footer-izq img    { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--teal); }
+    .footer-izq strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--teal); display: block; }
+    .footer-izq small  { font-size: 0.62rem; letter-spacing: 2px; color: rgba(255,255,255,0.38); text-transform: uppercase; }
+    .footer-centro { text-align: center; }
+    .footer-centro .direccion { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-bottom: 0.4rem; }
+    .footer-centro a { color: var(--teal); text-decoration: none; font-weight: 900; font-size: 0.85rem; }
+    .footer-centro a:hover { text-decoration: underline; }
+    .footer-der { text-align: right; }
+    .aviso-fentanilo {
+      display: inline-block; background: var(--red); color: var(--white);
+      font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px;
+      padding: 8px 20px; border-radius: 999px; box-shadow: 0 4px 16px rgba(204,20,20,0.4);
+    }
+
+
+
+
+
+
+
+
+
+
+    @keyframes subirFadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-24px); }
+    }
+    @keyframes girar   { to { transform: rotate(360deg); } }
+    @keyframes parpadeo { from { opacity: 0.6; } to { opacity: 1; } }
+
+    /* --- RESPONSIVE (pantallas pequeñas) --- */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 4rem 2.5rem; }
+      .hero-texto p { max-width: 100%; }
+      .hero-logo { justify-content: center; }
+      .logo-anillo { width: 280px; height: 280px; }
+      .grid-modulos { grid-template-columns: 1fr 1fr; }
+      .seccion, .seccion-fundamento, .seccion-proposito { padding: 4rem 2.5rem; }
+      nav { padding: 0.8rem 1.5rem; }
+      nav ul { display: none; }
+      footer { grid-template-columns: 1fr; text-align: center; }
+      .footer-izq { justify-content: center; }
+      .footer-der { text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .grid-modulos  { grid-template-columns: 1fr; }
+      .hero-texto h1 { font-size: 3.5rem; }
+      .hero::after   { display: none; }
+    }
+
+    /* ═══════════════════════════════════════
+       SNAKE GAME SECTION
+    ════════════════════════════════════════ */
+    .seccion-snake {
+      padding: 6rem 5rem;
+      background:
+        radial-gradient(ellipse at 15% 60%, rgba(91,31,170,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 15%, rgba(204,20,20,0.16) 0%, transparent 45%),
+        var(--dark-blue);
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(45,212,191,0.12);
+    }
+    .snake-deco-dot {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: flotar 3s ease-in-out infinite;
+    }
+    .snake-deco-dot.t { width:12px;height:12px;background:var(--teal); box-shadow:0 0 12px var(--teal); top:10%;right:16%;animation-duration:2.8s; }
+    .snake-deco-dot.r { width:10px;height:10px;background:var(--red);  box-shadow:0 0 10px var(--red);  bottom:18%;left:7%;animation-duration:3.5s;animation-delay:.6s; }
+    .snake-deco-dot.g { width:9px; height:9px; background:var(--gold); box-shadow:0 0 9px  var(--gold); top:60%;right:5%;animation-duration:4s;animation-delay:1.2s; }
+    .snake-deco-ring {
+      position:absolute; width:320px;height:320px; border-radius:50%;
+      border:1.5px dashed rgba(45,212,191,0.15); top:-70px;right:50px;
+      animation:girar 28s linear infinite; pointer-events:none;
+    }
+    .snake-deco-ring2 {
+      position:absolute; width:180px;height:180px; border-radius:50%;
+      border:1px solid rgba(204,20,20,0.1); bottom:30px;left:30px;
+      animation:girar 42s linear infinite reverse; pointer-events:none;
+    }
+    .snake-header { text-align:center; margin-bottom:3rem; animation:subirFadeIn .8s ease both; }
+    .snake-header .tag {
+      display:inline-block; background:rgba(45,212,191,0.1);
+      border:1px solid rgba(45,212,191,0.3); color:var(--teal);
+      font-size:.7rem; letter-spacing:3px; text-transform:uppercase;
+      font-weight:900; padding:5px 18px; border-radius:999px; margin-bottom:1rem;
+    }
+    .snake-header h2 {
+      font-family:'Bebas Neue',sans-serif; font-size:3.8rem;
+      letter-spacing:4px; line-height:1;
+    }
+    .snake-header h2 em    { color:var(--teal); font-style:normal; }
+    .snake-header h2 strong{ color:var(--bright-red); }
+    .snake-header p { color:rgba(255,255,255,0.55); font-size:.95rem; margin-top:.7rem; }
+
+    /* Layout */
+    .snake-layout {
+      display:grid; grid-template-columns:1fr auto 1fr;
+      gap:2rem; align-items:start;
+      max-width:1060px; margin:0 auto;
+      animation:subirFadeIn .8s .2s ease both;
+    }
+
+    /* Side panels */
+    .snake-panel {
+      background:linear-gradient(160deg,rgba(91,31,170,0.45),rgba(10,8,42,0.8));
+      border:1px solid rgba(45,212,191,0.2); border-radius:20px; padding:1.6rem;
+      transition:border-color .3s;
+    }
+    .snake-panel:hover { border-color:rgba(45,212,191,0.45); }
+    .s-panel-title {
+      font-family:'Bebas Neue',sans-serif; font-size:1.05rem;
+      letter-spacing:2px; color:var(--teal); margin-bottom:1.1rem;
+      display:flex; align-items:center; gap:8px;
+    }
+    .s-panel-title::before {
+      content:''; display:block; width:4px;height:16px;
+      background:var(--teal); border-radius:2px; box-shadow:0 0 7px var(--teal);
+    }
+
+    /* Score */
+    .s-score-block { text-align:center; margin-bottom:1rem; }
+    .s-score-label { font-size:.62rem;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:3px; }
+    .s-score-val {
+      font-family:'Bebas Neue',sans-serif; font-size:3rem; line-height:1;
+      color:var(--teal); text-shadow:0 0 20px rgba(45,212,191,0.5);
+      transition:transform .15s;
+    }
+    .s-score-val.bump { transform:scale(1.3); }
+    .s-score-best { font-size:.7rem;color:rgba(255,255,255,0.3);text-align:center;margin-top:-3px; }
+    .s-score-best span { color:var(--gold);font-weight:900; }
+    .s-divider { height:1px;background:rgba(45,212,191,0.14);margin:1.1rem 0; }
+
+    /* Level pips */
+    .s-level-pips { display:flex;gap:5px;flex-wrap:wrap;margin-top:5px; }
+    .s-pip {
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(45,212,191,0.13); border:1px solid rgba(45,212,191,0.22);
+      transition:background .3s,box-shadow .3s;
+    }
+    .s-pip.on { background:var(--teal);box-shadow:0 0 6px var(--teal); }
+    .s-level-name { font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--white);letter-spacing:2px;margin-top:5px; }
+
+    /* Speed buttons */
+    .s-speed-row { display:flex;gap:6px;flex-wrap:wrap;margin-top:7px; }
+    .s-spd {
+      flex:1; padding:6px 8px;
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+      border-radius:8px; color:rgba(255,255,255,0.45);
+      font-family:'Nunito',sans-serif; font-size:.68rem; font-weight:900;
+      letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all .2s;
+    }
+    .s-spd:hover { border-color:rgba(45,212,191,0.35);color:var(--teal); }
+    .s-spd.on-slow  { background:rgba(45,212,191,0.13);border-color:var(--teal);color:var(--teal);box-shadow:0 0 10px rgba(45,212,191,0.18); }
+    .s-spd.on-fast  { background:rgba(244,196,48,0.1); border-color:var(--gold);color:var(--gold);box-shadow:0 0 10px rgba(244,196,48,0.18); }
+    .s-spd.on-xtrem { background:rgba(204,20,20,0.13); border-color:var(--bright-red);color:var(--bright-red);box-shadow:0 0 10px rgba(204,20,20,0.22); }
+
+    /* Canvas */
+    .snake-canvas-wrap { position:relative;display:flex;flex-direction:column;align-items:center; }
+    .snake-canvas-border {
+      position:relative; padding:4px; border-radius:16px;
+      background:linear-gradient(135deg,var(--teal),var(--purple),var(--red));
+      box-shadow:0 0 40px rgba(45,212,191,0.22),0 0 80px rgba(91,31,170,0.28);
+    }
+    #snakeCanvas { display:block;border-radius:12px;background:#05051a; }
+
+    .snake-eat-flash {
+      position:absolute;inset:4px;border-radius:12px;
+      background:rgba(45,212,191,0.06);pointer-events:none;opacity:0;z-index:5;
+    }
+    .snake-eat-flash.flash { animation:s-flash .25s ease; }
+    @keyframes s-flash { 0%{opacity:1}100%{opacity:0} }
+
+    .snake-pause-badge {
+      position:absolute;top:11px;right:14px;
+      background:rgba(244,196,48,0.14);border:1px solid rgba(244,196,48,0.3);
+      color:var(--gold);font-family:'Bebas Neue',sans-serif;
+      font-size:.72rem;letter-spacing:2px;padding:3px 11px;border-radius:999px;
+      opacity:0;transition:opacity .2s;
+    }
+    .snake-pause-badge.on { opacity:1; }
+
+    /* Overlays */
+    .snake-overlay {
+      position:absolute;inset:4px;border-radius:12px;
+      background:rgba(5,5,26,0.88);backdrop-filter:blur(6px);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:.9rem;z-index:10;animation:fadeIn .3s ease;
+    }
+    .snake-overlay.hidden { display:none; }
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .s-ov-icon { font-size:3.2rem;line-height:1;animation:flotar 2.5s ease-in-out infinite; }
+    .s-ov-title { font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:4px;text-align:center;line-height:1.1; }
+    .s-ov-title em     { color:var(--teal);font-style:normal; }
+    .s-ov-title strong { color:var(--bright-red); }
+    .s-ov-sub { color:rgba(255,255,255,0.5);font-size:.84rem;text-align:center;letter-spacing:.5px; }
+    .s-ov-score { font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:rgba(255,255,255,0.38); }
+    .s-ov-score span { color:var(--gold);font-size:1.7rem; }
+
+    .s-btn {
+      display:inline-flex;align-items:center;gap:9px;
+      background:linear-gradient(135deg,var(--teal),#0F9E8C);
+      color:var(--dark-blue);font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:.88rem;letter-spacing:2px;text-transform:uppercase;
+      padding:12px 26px;border-radius:999px;border:none;cursor:pointer;
+      box-shadow:0 6px 24px rgba(45,212,191,0.38);transition:transform .3s,box-shadow .3s;
+    }
+    .s-btn:hover { transform:translateY(-3px);box-shadow:0 12px 30px rgba(45,212,191,0.55); }
+    .s-btn.red {
+      background:linear-gradient(135deg,var(--bright-red),var(--red));
+      color:var(--white);box-shadow:0 6px 24px rgba(204,20,20,0.38);
+    }
+    .s-btn.red:hover { box-shadow:0 12px 30px rgba(204,20,20,0.55); }
+
+    /* Action row */
+    .s-action-row { display:flex;align-items:center;gap:12px;margin-top:13px; }
+    .s-btn-pause {
+      padding:8px 18px;background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.12);border-radius:999px;
+      color:rgba(255,255,255,0.55);font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:.76rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+    }
+    .s-btn-pause:hover { border-color:rgba(244,196,48,0.4);color:var(--gold); }
+    .s-hint { font-size:.7rem;color:rgba(255,255,255,0.28);letter-spacing:1px; }
+
+    /* Controls */
+    .s-keys-grid { display:grid;grid-template-columns:repeat(3,32px);gap:4px;margin:0 auto;width:fit-content; }
+    .s-key {
+      width:32px;height:32px;background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.13);border-radius:6px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;color:rgba(255,255,255,0.55);transition:background .2s,border-color .2s;
+    }
+    .s-key.lit  { background:rgba(45,212,191,0.2);border-color:var(--teal);color:var(--teal); }
+    .s-key.blank{ background:transparent;border:none; }
+    .s-key-hint { font-size:.66rem;color:rgba(255,255,255,0.27);text-align:center;margin-top:7px;letter-spacing:1px; }
+
+    /* Stats */
+    .s-stat-row { display:flex;flex-direction:column;gap:9px;margin-top:3px; }
+    .s-stat-num { font-family:'Bebas Neue',sans-serif;font-size:1.75rem;line-height:1; }
+
+    /* Legend */
+    .s-legend { display:flex;flex-direction:column;gap:8px;margin-top:3px; }
+    .s-legend-item { display:flex;align-items:center;gap:10px; }
+    .s-legend-dot { width:15px;height:15px;border-radius:4px;flex-shrink:0; }
+
+    /* D-Pad mobile */
+    .s-dpad { display:none;grid-template-columns:repeat(3,48px);gap:6px;margin-top:14px; }
+    .s-dpad-btn {
+      width:48px;height:48px;background:rgba(45,212,191,0.08);
+      border:1px solid rgba(45,212,191,0.24);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:17px;color:var(--teal);cursor:pointer;
+      transition:background .15s,transform .1s;user-select:none;
+    }
+    .s-dpad-btn:active { background:rgba(45,212,191,0.24);transform:scale(.92); }
+    .s-dpad-blank { background:transparent!important;border:none!important; }
+
+    @media (max-width:900px) {
+      .seccion-snake { padding:3rem 1.5rem 4rem; }
+      .snake-layout  { grid-template-columns:1fr;justify-items:center; }
+      .snake-panel   { width:100%;max-width:400px; }
+      .s-dpad        { display:grid; }
+      .snake-panel.right { order:3; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="borde-azteca"></div>
+
+<nav>
+  <div class="nav-logo">
+    <img src="Logo-COBAO-300x300.jpg">
+    <div>
+      <strong>TIC'S COBAO</strong>
+      <small>Formacion Laboral - Cultura Digital</small>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#modulos">Modulos</a></li>
+    <li><a href="#proposito">Proposito</a></li>
+    <li><a href="#fundamento">Fundamento</a></li>
+    <li><a href="#snake">🐍 Snake</a></li>
+  </ul>
+  <div class="nav-badge">COBAO - OAXACA</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-texto">
+    <h1>
+      Tecnologias de
+      <em>la Informacion</em>
+      <strong>y la Comunicacion</strong>
+    </h1>
+
+
+    <p>Domina las herramientas digitales del futuro. Selecciona, procesa, analiza y sistematiza informacion para dar soluciones creativas e innovadoras a los problemas del mundo laboral y escolar.</p>
+
+    <a href="#modulos" class="btn-hero">Ver Modulos</a>
+  </div>
+
+
+
+
+
+  <div class="hero-logo">
+    <div class="logo-anillo">
+      <div class="punto-orbita"        style="top:5%;   left:45%;"></div>
+      <div class="punto-orbita rojo"   style="bottom:8%; right:10%;"></div>
+      <div class="punto-orbita dorado" style="top:40%;  left:-2%;"></div>
+      <img src="WhatsApp Image 2026-03-07 at 9.41.23 PM.jpeg">
+    </div>
+  </div>
+</section>
+
+<div class="barra-stats">
+  <div class="stat"><div class="numero">4</div><div class="etiqueta-stat">Semestres</div></div>
+  <div class="divisor"></div>
+  <div class="stat"><div class="numero">4</div><div class="etiqueta-stat">Modulos</div></div>
+  <div class="divisor"></div>
+  <div class="stat"><div class="numero">8</div><div class="etiqueta-stat">Submodulos</div></div>
+  <div class="divisor"></div>
+<div class="stat"><div class="numero">&#x221E;</div><div class="etiqueta-stat">
+  Oportunidades</div></div>
+</div>
+
+
+
+
+
+
+<section class="seccion" id="modulos">
+  <div class="encabezado-seccion">
+    <span class="tag">Plan de Estudios</span>
+
+    <h2>Estructura de la Capacitacion</h2>
+
+    <p>Del tercer al sexto semestre, cuatro modulos especializados que te preparan para el mundo digital.</p>
+
+  </div>
+  <div class="grid-modulos">
+
+ <div class="tarjeta-modulo" onclick="location.href='modulo1_software_aplicacion.html'" style="cursor:pointer;">
+  <div class="tarjeta-top">
+
+        <span class="semestre">Tercer Semestre</span>
+
+        <span class="numero-romano">I</span>
+
+      </div>
+
+      <div class="tarjeta-body">
+
+        <h3>Software de Aplicacion</h3>
+
+        <div class="submodulo"><div class="punto-sub"></div><p><span>
+
+Submodulo 1</span>Gestion de archivos de texto</p></div>
+
+        <div class="submodulo"><div class="punto-sub"></div><p><span>
+
+
+
+Submodulo 2</span>Hoja de calculo aplicado</p></div>
+      </div>
+    </div>
+
+ <div class="tarjeta-modulo" onclick="location.href='modulo2_hardware_comunicaciones.html'" style="cursor:pointer;">
+  <div class="tarjeta-top">
+
+        <span class="semestre">Cuarto Semestre</span>
+        <span class="numero-romano">II</span>
+      </div>
+      <div class="tarjeta-body">
+        <h3>Hardware y Comunicaciones</h3>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 1</span>Comunidades virtuales</p></div>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 2</span>Mantenimiento y redes de computo</p></div>
+      </div>
+    </div>
+
+
+ <div class="tarjeta-modulo" onclick="location.href='pa.html'" style="cursor:pointer;">
+  <div class="tarjeta-top">
+
+        <span class="semestre">Quinto Semestre</span>
+        <span class="numero-romano">III</span>
+      </div>
+      <div class="tarjeta-body">
+        <h3>Desarrollo de Sistemas</h3>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 1</span>Sistemas de informacion</p></div>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 2</span>Programacion</p></div>
+      </div>
+    </div>
+
+ <div class="tarjeta-modulo" onclick="location.href='PE.html'" style="cursor:pointer;">
+  <div class="tarjeta-top">
+
+        <span class="semestre">Sexto Semestre</span>
+        <span class="numero-romano">IV</span></a>
+      </div>
+      <div class="tarjeta-body">
+        <h3>Software de Diseño</h3>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 1</span>Paginas web</p></div>
+        <div class="submodulo"><div class="punto-sub"></div><p><span>Submodulo 2</span>Diseno digital</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="seccion-proposito" id="proposito">
+  <h2>Proposito <em>Profesional</em></h2>
+  <p>Permitir la incorporacion al mundo laboral o desarrollar procesos productivos independientes de acuerdo con los intereses profesionales o las necesidades del entorno social, en instituciones tanto publicas como privadas.</p>
+</section>
+
+<section class="seccion-fundamento" id="fundamento">
+  <h2>Fundamento</h2>
+  <span class="linea-decorativa"></span>
+  <p>La Formacion laboral de Tecnologias de la Informacion y la Comunicacion pertenece al Recurso Sociocognitivo de Cultura Digital. El objetivo es que las y los estudiantes puedan hacer uso de los recursos tecnologicos para seleccionar, procesar, analizar y sistematizar la informacion y dar soluciones a problemas del contexto laboral y escolar, mediante su aplicacion de forma creativa e innovadora.</p>
+</section>
+
+
+
+
+
+<!-- ══════════════════════════════════════════
+     SNAKE GAME
+════════════════════════════════════════════ -->
+<section class="seccion-snake" id="snake">
+
+  <!-- Decorative dots & rings -->
+  <div class="snake-deco-dot t"></div>
+  <div class="snake-deco-dot r"></div>
+  <div class="snake-deco-dot g"></div>
+  <div class="snake-deco-ring"></div>
+  <div class="snake-deco-ring2"></div>
+
+  <!-- Header -->
+  <div class="snake-header">
+    <span class="tag">Zona de Juego</span>
+    <h2>SNAKE <em>TIC</em> <strong>COBAO</strong></h2>
+    <p>Usa las teclas de dirección · Come la manzana · No te choques</p>
+  </div>
+
+  <!-- Main layout -->
+  <div class="snake-layout">
+
+    <!-- LEFT: Score + Level + Speed -->
+    <div class="snake-panel">
+      <div class="s-panel-title">Puntuacion</div>
+      <div class="s-score-block">
+        <div class="s-score-label">Puntaje Actual</div>
+        <div class="s-score-val" id="s-score">0</div>
+      </div>
+      <div class="s-score-best">Mejor: <span id="s-best">0</span></div>
+
+      <div class="s-divider"></div>
+
+      <div class="s-panel-title">Nivel</div>
+      <div class="s-level-name" id="s-level-name">Principiante</div>
+      <div class="s-level-pips" id="s-pips">
+        <div class="s-pip on"></div>
+        <div class="s-pip"></div>
+        <div class="s-pip"></div>
+        <div class="s-pip"></div>
+        <div class="s-pip"></div>
+      </div>
+
+      <div class="s-divider"></div>
+
+      <div class="s-panel-title">Velocidad</div>
+      <div class="s-speed-row">
+        <button class="s-spd on-slow" id="ss-slow"  onclick="sSetSpeed('slow')">Lenta</button>
+        <button class="s-spd"         id="ss-fast"  onclick="sSetSpeed('fast')">Rapida</button>
+        <button class="s-spd"         id="ss-xtrem" onclick="sSetSpeed('extreme')">Extrema</button>
+      </div>
+    </div>
+
+    <!-- CANVAS -->
+    <div class="snake-canvas-wrap">
+      <div class="snake-canvas-border">
+        <canvas id="snakeCanvas" width="360" height="360"></canvas>
+        <div class="snake-eat-flash" id="s-flash"></div>
+        <div class="snake-pause-badge" id="s-pause-badge">PAUSA</div>
+
+        <!-- Start overlay -->
+        <div class="snake-overlay" id="s-ov-start">
+          <div class="s-ov-icon">🐍</div>
+          <div class="s-ov-title">SNAKE <em>TIC</em><br><strong>COBAO</strong></div>
+          <div class="s-ov-sub">Controla la serpiente · Come la manzana<br>No choques con paredes ni contigo</div>
+          <button class="s-btn" onclick="sStart()">▶ &nbsp;Iniciar Juego</button>
+        </div>
+
+        <!-- Game Over overlay -->
+        <div class="snake-overlay hidden" id="s-ov-over">
+          <div class="s-ov-icon">💀</div>
+          <div class="s-ov-title"><strong>GAME</strong><br><em>OVER</em></div>
+          <div class="s-ov-score">Puntaje: <span id="s-final">0</span></div>
+          <button class="s-btn red" onclick="sStart()">↺ &nbsp;Reintentar</button>
+        </div>
+      </div>
+
+      <!-- Action row -->
+      <div class="s-action-row">
+        <button class="s-btn-pause" id="s-pause-btn" onclick="sTogglePause()">⏸ &nbsp;Pausar</button>
+        <span class="s-hint">P = Pausa</span>
+      </div>
+
+      <!-- Mobile D-Pad -->
+      <div class="s-dpad">
+        <div class="s-dpad-blank s-dpad-btn"></div>
+        <div class="s-dpad-btn" onclick="sMobileDir('UP')">▲</div>
+        <div class="s-dpad-blank s-dpad-btn"></div>
+        <div class="s-dpad-btn" onclick="sMobileDir('LEFT')">◀</div>
+        <div class="s-dpad-blank s-dpad-btn"></div>
+        <div class="s-dpad-btn" onclick="sMobileDir('RIGHT')">▶</div>
+        <div class="s-dpad-blank s-dpad-btn"></div>
+        <div class="s-dpad-btn" onclick="sMobileDir('DOWN')">▼</div>
+        <div class="s-dpad-blank s-dpad-btn"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Controls + Stats + Legend -->
+    <div class="snake-panel right">
+      <div class="s-panel-title">Controles</div>
+      <div class="s-keys-grid">
+        <div class="s-key blank"></div>
+        <div class="s-key" id="sk-up">▲</div>
+        <div class="s-key blank"></div>
+        <div class="s-key" id="sk-left">◀</div>
+        <div class="s-key blank"></div>
+        <div class="s-key" id="sk-right">▶</div>
+        <div class="s-key blank"></div>
+        <div class="s-key" id="sk-down">▼</div>
+        <div class="s-key blank"></div>
+      </div>
+      <p class="s-key-hint">WASD también funciona</p>
+
+      <div class="s-divider"></div>
+
+      <div class="s-panel-title">Estadisticas</div>
+      <div class="s-stat-row">
+        <div>
+          <div class="s-score-label">Longitud</div>
+          <div class="s-stat-num" style="color:var(--white)" id="s-stat-len">1</div>
+        </div>
+        <div>
+          <div class="s-score-label">Manzanas comidas</div>
+          <div class="s-stat-num" style="color:var(--gold);text-shadow:0 0 10px rgba(244,196,48,0.3)" id="s-stat-food">0</div>
+        </div>
+        <div>
+          <div class="s-score-label">Partidas jugadas</div>
+          <div class="s-stat-num" style="color:var(--purple)" id="s-stat-games">0</div>
+        </div>
+      </div>
+
+      <div class="s-divider"></div>
+
+      <div class="s-panel-title">Leyenda</div>
+      <div class="s-legend">
+        <div class="s-legend-item">
+          <div class="s-legend-dot" style="background:var(--teal);box-shadow:0 0 6px var(--teal)"></div>
+          <span style="font-size:.78rem;color:rgba(255,255,255,0.55)">Cabeza de la serpiente</span>
+        </div>
+        <div class="s-legend-item">
+          <div class="s-legend-dot" style="background:#0F9E8C;box-shadow:0 0 4px rgba(15,158,140,0.35)"></div>
+          <span style="font-size:.78rem;color:rgba(255,255,255,0.55)">Cuerpo</span>
+        </div>
+        <div class="s-legend-item">
+          <div class="s-legend-dot" style="background:var(--bright-red);box-shadow:0 0 6px var(--red)"></div>
+          <span style="font-size:.78rem;color:rgba(255,255,255,0.55)">Manzana (comida)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  const cv = document.getElementById('snakeCanvas');
+  const ctx = cv.getContext('2d');
+  const T = 18, COLS = cv.width/T, ROWS = cv.height/T;
+  const C = {
+    bg:'#05051a', grid:'rgba(45,212,191,0.04)',
+    head:'#2DD4BF', headG:'rgba(45,212,191,0.6)',
+    body:'#0F9E8C', bodyD:'#0a6e62',
+    food:'#FF2020', foodG:'rgba(255,32,32,0.6)', foodIn:'#FF8080',
+    eye:'#05051a'
+  };
+  const SPEEDS = {slow:140, fast:85, extreme:50};
+  let snake, dir, nDir, food, score, best=0, totFood=0, totGames=0;
+  let loop, running=false, paused=false, spd='slow', fEaten=0;
+
+  function init(){
+    snake=[{x:Math.floor(COLS/2),y:Math.floor(ROWS/2)},{x:Math.floor(COLS/2)-1,y:Math.floor(ROWS/2)}];
+    dir={x:1,y:0}; nDir={x:1,y:0}; score=0; fEaten=0; paused=false;
+    placeFood(); updateUI();
+  }
+  function placeFood(){
+    let p;
+    do { p={x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)}; }
+    while(snake.some(s=>s.x===p.x&&s.y===p.y));
+    food={...p, pulse:0};
+  }
+  window.sSetSpeed=function(m){
+    spd=m;
+    document.querySelectorAll('.s-spd').forEach(b=>b.className='s-spd');
+    const map={slow:'on-slow',fast:'on-fast',extreme:'on-xtrem'};
+    const idm={slow:'ss-slow',fast:'ss-fast',extreme:'ss-xtrem'};
+    const el=document.getElementById(idm[m]);
+    if(el) el.classList.add(map[m]);
+    if(running&&!paused){ clearInterval(loop); loop=setInterval(tick,SPEEDS[spd]); }
+  };
+  window.sStart=function(){
+    if(loop) clearInterval(loop);
+    totGames++;
+    document.getElementById('s-stat-games').textContent=totGames;
+    document.getElementById('s-ov-start').classList.add('hidden');
+    document.getElementById('s-ov-over').classList.add('hidden');
+    document.getElementById('s-pause-badge').classList.remove('on');
+    document.getElementById('s-pause-btn').textContent='⏸ \u00a0Pausar';
+    running=true; paused=false;
+    init();
+    loop=setInterval(tick,SPEEDS[spd]);
+    draw();
+  };
+  function tick(){
+    dir={...nDir};
+    const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    if(h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS){ end(); return; }
+    if(snake.some(s=>s.x===h.x&&s.y===h.y)){ end(); return; }
+    snake.unshift(h);
+    if(h.x===food.x&&h.y===food.y){
+      score+=10; fEaten++; totFood++;
+      if(score>best) best=score;
+      placeFood(); eatFlash(); updateUI();
+      document.getElementById('s-stat-food').textContent=totFood;
+    } else { snake.pop(); }
+    draw();
+  }
+  function end(){
+    clearInterval(loop); running=false;
+    document.getElementById('s-final').textContent=score;
+    document.getElementById('s-ov-over').classList.remove('hidden');
+  }
+  window.sTogglePause=function(){
+    if(!running) return;
+    paused=!paused;
+    const b=document.getElementById('s-pause-badge');
+    const btn=document.getElementById('s-pause-btn');
+    if(paused){ clearInterval(loop); b.classList.add('on'); btn.textContent='▶ \u00a0Continuar'; }
+    else { loop=setInterval(tick,SPEEDS[spd]); b.classList.remove('on'); btn.textContent='⏸ \u00a0Pausar'; }
+  };
+  function updateUI(){
+    const el=document.getElementById('s-score');
+    el.textContent=score; el.classList.add('bump');
+    setTimeout(()=>el.classList.remove('bump'),200);
+    document.getElementById('s-best').textContent=best;
+    document.getElementById('s-stat-len').textContent=snake?snake.length:1;
+    const lvls=[
+      {n:'Principiante',m:0},{n:'Aprendiz',m:50},{n:'Hacker',m:130},
+      {n:'Senior Dev',m:250},{n:'TIC Master',m:420}
+    ];
+    let li=0; lvls.forEach((l,i)=>{ if(score>=l.m) li=i; });
+    document.getElementById('s-level-name').textContent=lvls[li].n;
+    document.querySelectorAll('#s-pips .s-pip').forEach((p,i)=>p.classList.toggle('on',i<=li));
+  }
+  function eatFlash(){
+    const el=document.getElementById('s-flash');
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
+  function flashKey(d){
+    const el=document.getElementById('sk-'+d);
+    if(!el) return; el.classList.add('lit'); setTimeout(()=>el.classList.remove('lit'),180);
+  }
+  window.sMobileDir=function(d){
+    const m={UP:{x:0,y:-1},DOWN:{x:0,y:1},LEFT:{x:-1,y:0},RIGHT:{x:1,y:0}};
+    const nd=m[d]; if(!nd) return;
+    if(nd.x!==-dir.x||nd.y!==-dir.y) nDir=nd;
+    flashKey(d.toLowerCase());
+  };
+  document.addEventListener('keydown',function(e){
+    if(e.key==='p'||e.key==='P'){ sTogglePause(); return; }
+    if(e.key===' '){ e.preventDefault(); sTogglePause(); return; }
+    const ds={
+      ArrowUp:{x:0,y:-1},w:{x:0,y:-1},W:{x:0,y:-1},
+      ArrowDown:{x:0,y:1},s:{x:0,y:1},S:{x:0,y:1},
+      ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},A:{x:-1,y:0},
+      ArrowRight:{x:1,y:0},d:{x:1,y:0},D:{x:1,y:0}
+    };
+    const nd=ds[e.key]; if(!nd) return;
+    e.preventDefault();
+    if(nd.x!==-dir.x||nd.y!==-dir.y) nDir=nd;
+    const km={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',
+              ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
+    if(km[e.key]) flashKey(km[e.key]);
+  });
+  function draw(){
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.strokeStyle=C.grid; ctx.lineWidth=0.5;
+    for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*T,0);ctx.lineTo(x*T,cv.height);ctx.stroke();}
+    for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*T);ctx.lineTo(cv.width,y*T);ctx.stroke();}
+    // Food
+    food.pulse=(food.pulse||0)+0.08;
+    const fp=Math.sin(food.pulse)*0.12+0.88, fc=T*fp, fo=(T-fc)/2;
+    const fx=food.x*T+fo, fy=food.y*T+fo;
+    ctx.save(); ctx.shadowColor=C.foodG; ctx.shadowBlur=16;
+    ctx.fillStyle=C.food; ctx.beginPath(); ctx.roundRect(fx,fy,fc,fc,4); ctx.fill(); ctx.restore();
+    ctx.fillStyle=C.foodIn; ctx.beginPath(); ctx.roundRect(fx+2,fy+2,fc*.35,fc*.35,2); ctx.fill();
+    if(!snake) return;
+    // Body
+    for(let i=snake.length-1;i>=1;i--){
+      const s=snake[i], a=Math.max(0.3,1-(i/snake.length)*0.35);
+      ctx.globalAlpha=a;
+      ctx.fillStyle=i<4?C.body:C.bodyD;
+      ctx.beginPath(); ctx.roundRect(s.x*T+1.5,s.y*T+1.5,T-3,T-3,3); ctx.fill();
+      if(i<5){ ctx.fillStyle='rgba(45,212,191,0.18)'; ctx.beginPath(); ctx.roundRect(s.x*T+3,s.y*T+3,(T-6)*.5,(T-6)*.4,2); ctx.fill(); }
+    }
+    ctx.globalAlpha=1;
+    // Head
+    const h=snake[0];
+    ctx.save(); ctx.shadowColor=C.headG; ctx.shadowBlur=14;
+    ctx.fillStyle=C.head; ctx.beginPath(); ctx.roundRect(h.x*T+1,h.y*T+1,T-2,T-2,5); ctx.fill(); ctx.restore();
+    ctx.fillStyle='rgba(255,255,255,0.28)'; ctx.beginPath(); ctx.roundRect(h.x*T+3,h.y*T+3,(T-6)*.55,(T-6)*.4,2); ctx.fill();
+    // Eyes
+    const ex=dir.x,ey=dir.y;
+    const ex1=h.x*T+T/2+(ey!==0?-3:2+ex*4), ey1=h.y*T+T/2+(ex!==0?-3:2+ey*4);
+    const ex2=h.x*T+T/2+(ey!==0? 3:2+ex*4), ey2=h.y*T+T/2+(ex!==0? 3:2+ey*4);
+    ctx.fillStyle=C.eye;
+    ctx.beginPath(); ctx.arc(ex1,ey1,2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex2,ey2,2,0,Math.PI*2); ctx.fill();
+  }
+  // Demo animation on start screen
+  let animId;
+  function demoAnim(){
+    animId=requestAnimationFrame(demoAnim);
+    const t=Date.now()/800;
+    ctx.fillStyle=C.bg; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.strokeStyle=C.grid; ctx.lineWidth=0.5;
+    for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*T,0);ctx.lineTo(x*T,cv.height);ctx.stroke();}
+    for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*T);ctx.lineTo(cv.width,y*T);ctx.stroke();}
+    const cx=Math.floor(COLS/2),cy=Math.floor(ROWS/2);
+    const ds=[{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy},{x:cx-3,y:cy},{x:cx-3,y:cy+1},{x:cx-3,y:cy+2},{x:cx-2,y:cy+2},{x:cx-1,y:cy+2},{x:cx,y:cy+2}];
+    ds.forEach((s,i)=>{
+      if(i===0){ ctx.save(); ctx.shadowColor=C.headG; ctx.shadowBlur=14; ctx.fillStyle=C.head; ctx.beginPath(); ctx.roundRect(s.x*T+1,s.y*T+1,T-2,T-2,5); ctx.fill(); ctx.restore(); }
+      else { ctx.globalAlpha=Math.max(0.3,1-(i/ds.length)*0.4); ctx.fillStyle=i<4?C.body:C.bodyD; ctx.beginPath(); ctx.roundRect(s.x*T+1.5,s.y*T+1.5,T-3,T-3,3); ctx.fill(); ctx.globalAlpha=1; }
+    });
+    const fp2=Math.sin(t)*.12+.88,fc2=T*fp2,fo2=(T-fc2)/2;
+    ctx.save(); ctx.shadowColor=C.foodG; ctx.shadowBlur=16;
+    ctx.fillStyle=C.food; ctx.beginPath(); ctx.roundRect((cx+3)*T+fo2,(cy+1)*T+fo2,fc2,fc2,4); ctx.fill(); ctx.restore();
+  }
+  demoAnim();
+  const origStart=window.sStart;
+  window.sStart=function(){ cancelAnimationFrame(animId); origStart(); };
+  sSetSpeed('slow');
+})();
+</script>
+
+<footer>
+  <div class="footer-izq">
+    <img src="WhatsApp Image 2026-03-07 at 9.41.23 PM.jpeg" alt="im">
+    <div>
+      <strong>TIC'S COBAO</strong>
+      <small>Cultura Digital - Oaxaca</small>
+    </div>
+  </div>
+  <div class="footer-centro">
+    <p class="direccion">Av. Universidad N 145, C.P. 71230 - Santa Cruz Xoxocotlan, Oaxaca</p>
+
+
+
+   <a href="https://www.cobao.edu.mx"target="_blank">www.cobao.edu.mx</a><br>
+ <a href="https://www.facebook.com/COBAO18Chazumba "target="_blank">https://www.facebook.com/COBAO18Chazumba</a>
+  </div>
+
+
+
+  <div class="footer-der">
+    <div class="aviso-fentanilo">EL FENTANILO TE MATA</div>
+
+</footer>
+
+</body>
+</html>
